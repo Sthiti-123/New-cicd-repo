@@ -1,7 +1,7 @@
 pipeline {
        agent {
         node {
-            label 'jenkins-slave-node'
+            label 'jenkins-slave-node' 
         }
     }
  
@@ -20,10 +20,10 @@ pipeline {
     
         stage('SonarQube analysis') {
             environment {
-                scannerHome = tool 'sonar-scanner'
+                scannerHome = tool 'sonar-scanner-portal'
             }
             steps{
-                withSonarQubeEnv('sonar-server') {
+                withSonarQubeEnv('sonar-server-portal') {
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
