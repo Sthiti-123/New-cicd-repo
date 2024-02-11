@@ -45,7 +45,7 @@ pipeline {
     }
 } 
 */
- stage("Artifact Publish") {
+        stage("Artifact Publish") {
             steps {
                 script {
                     echo '------------- Artifact Publish Started ------------'
@@ -68,6 +68,28 @@ pipeline {
                     echo '------------ Artifact Publish Ended -----------'  
                 }
             }   
+        }
+
+        stage(" Create Docker Image ") {
+            steps {
+                script {
+                    echo '-------------- Docker Build Started -------------'
+                    app = docker.build("meportal7379.jfrog.io//dockerimage-local-docker-local/myapp:1.0.1")
+                    echo '-------------- Docker Build Ended -------------'
+                }
+            }
+        }
+
+        stage (" Docker Publish "){
+            steps {
+                script {
+                        echo '---------- Docker Publish Started --------'  
+                        docker.withRegistry("https://meportal7379.jfrog.io/", 'jfrogcred'){
+                        app.push()
+                        echo '------------ Docker Publish Ended ---------'  
+                    }    
+                }
+            }
         }
     }
  }
