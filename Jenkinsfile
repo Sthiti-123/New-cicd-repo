@@ -5,13 +5,10 @@ pipeline {
         }
     }
  
-    
     environment {
         PATH = "/opt/apache-maven-3.9.6/bin:$PATH"
     }
 
-
-       
     stages {
         stage("Build Stage"){
             steps {
@@ -21,7 +18,7 @@ pipeline {
             }
         }
 
-         stage("Test Stage"){
+        stage("Test Stage"){
             steps{
                 echo "----------- unit test started ----------"
                 sh 'mvn surefire-report:report'
@@ -91,5 +88,15 @@ pipeline {
                 }
             }
         }
+
+        stage(" Deploy ") {
+            steps {
+                script {
+                    echo '<--------------- Helm Deploy Started --------------->'
+                    sh 'helm install meportal meportal-0.1.0.tgz'
+                    echo '<--------------- Helm deploy Ends --------------->'
+         }
+       }
     }
- }
+  }
+}
